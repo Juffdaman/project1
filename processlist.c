@@ -70,9 +70,38 @@ void processlist_printInfo (processlist *pt) {
 
 
 
+void processlist_fifo (processlist *pt) {
+	int time=0;
+int waittime[52];
+int lastwaittime[52];
+int totalwaittime=0;
+int avgwaittime=0;
+int j;
+ProcessNode *p;
+//initialize wait time/ print for debug
+for (p=pt->head; p != NULL; p=p->next) {
+		process_printCSV(p->process);
+	
+		waittime[p->process->pid]=0;
+		lastwaittime[p->process->pid]=0;
+	}
+for (p=pt->head; p != NULL; p=p->next) {
+		waittime[p->process->pid]=time+p->process->arrivalTime;
+		time=time+p->process->numCycles+10;
+		
+	}
 
 
+		for (j=1;j<51;j++){
+		printf("process %d waittime %d\n",j, waittime[j]);
+	totalwaittime=totalwaittime+waittime[j];
 
+	}
+	avgwaittime=totalwaittime/50;
+	printf("waittime %d\n", avgwaittime);
+	printf("contextswitch 490\n");
+	
+}
 
 void processlist_roundrobin (processlist *pt) {
 	int remaining_work;
@@ -85,8 +114,8 @@ void processlist_roundrobin (processlist *pt) {
 	int test=0;
 	int waittime[52];
 	int lastwaittime[52];
-	int totalwaittime;
-	int avgwaittime;
+	int totalwaittime=0;
+	int avgwaittime=0;
 	if (!pt) return;
 	ProcessNode *p;
 	

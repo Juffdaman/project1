@@ -8,6 +8,7 @@ int main () {
 	processlist *pt1 = new_processlist(process_number);
 
 	//prints table information
+	processlist_fifo (pt1);
 	processlist_roundrobin(pt1);
 	processlist_printInfo(pt1);
 	
