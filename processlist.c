@@ -79,9 +79,14 @@ void processlist_roundrobin (processlist *pt) {
 	int array[51];
 	int total=0;
 	int time=0;
+	int j;
 	int conswitch=0;
 	int lastran=1;
 	int test=0;
+	int waittime[52];
+	int lastwaittime[52];
+	int totalwaittime;
+	int avgwaittime;
 	if (!pt) return;
 	ProcessNode *p;
 	
@@ -95,6 +100,8 @@ void processlist_roundrobin (processlist *pt) {
 		process_printCSV(p->process);
 		total=total+p->process->numCycles;
 		printf("total %d\n", total);
+		waittime[p->process->pid]=0;
+		lastwaittime[p->process->pid]=0;
 	}
 	
 	
@@ -109,6 +116,11 @@ void processlist_roundrobin (processlist *pt) {
 				// if the process has arrived and has remaining cycles
 		if (time>=p->process->arrivalTime&&p->process->numCycles!=0)
 		{
+			
+			
+			
+			
+			
 			// ad a context switch penalty if applicable
 			if(lastran!= p->process->pid)
 				
@@ -116,14 +128,20 @@ void processlist_roundrobin (processlist *pt) {
 					temptime=temptime+10;
 					conswitch=conswitch+10;
 					printf("conswitch %d\n",conswitch);
+				
+				
 				}
+				
+				waittime[p->process->pid]=waittime[p->process->pid]+ time+temptime-lastwaittime[p->process->pid];
+				
 			
 //reduce the remaining cycles on the process, add the cycles to the time count
 	if(p->process->numCycles>50)
 		{		p->process->numCycles=p->process->numCycles-50;
 			total=total-50;
 		temptime=temptime+50;
-		printf("process %d cycletime %d\n",p->process->pid, p->process->numCycles);
+		printf("process %d waittime %d\n",p->process->pid, waittime[p->process->pid]);
+		
 		}
 		
 		else if(p->process->numCycles<=50)
@@ -131,10 +149,10 @@ void processlist_roundrobin (processlist *pt) {
 	total=total-p->process->numCycles;
 			temptime=temptime+p->process->numCycles;
 	p->process->numCycles=0;
-			printf("process %d cycletime %d\n",p->process->pid, p->process->numCycles);
+			printf("process %d waittime %d\n",p->process->pid, waittime[p->process->pid]);
 
 		}
-			
+		lastwaittime[p->process->pid]=time+temptime;	
 		
 	// set process as the one most recently ran
 		lastran=p->process->pid;
@@ -150,6 +168,16 @@ void processlist_roundrobin (processlist *pt) {
 		time=temptime+time;
 test++;
 	}
+	
+	for (j=1;j<51;j++){
+		printf("process %d waittime %d\n",j, waittime[j]);
+	totalwaittime=totalwaittime+waittime[j];
+
+	}
+	avgwaittime=totalwaittime/50;
+	printf("waittime %d\n", avgwaittime);
+	printf("contextswitch %d\n", conswitch);
+	
 }
 
 
