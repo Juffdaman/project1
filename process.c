@@ -48,5 +48,5 @@ int process_getPID (process *p) {
 
 //used by processlist to print to console
 void process_printCSV (process *p) {
-	printf("%d, %d\n", p->pid, p->arrivalTime);
+	printf("%d, %d\n", p->pid, p->numCycles);
 }

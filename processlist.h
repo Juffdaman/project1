@@ -27,3 +27,4 @@ void processlist_printInfo (processlist *pt);
 void processlist_roundrobin (processlist *pt);
 
 
+void processlist_fifo (processlist *pt);

@@ -99,7 +99,7 @@ void processlist_roundrobin (processlist *pt) {
 	for (p=pt->head; p != NULL; p=p->next) {
 		process_printCSV(p->process);
 		total=total+p->process->numCycles;
-		printf("total %d\n", total);
+		//printf("total %d\n", total);
 		waittime[p->process->pid]=0;
 		lastwaittime[p->process->pid]=0;
 	}
@@ -127,7 +127,7 @@ void processlist_roundrobin (processlist *pt) {
 				{
 					temptime=temptime+10;
 					conswitch=conswitch+10;
-					printf("conswitch %d\n",conswitch);
+					//printf("conswitch %d\n",conswitch);
 				
 				
 				}
@@ -140,7 +140,7 @@ void processlist_roundrobin (processlist *pt) {
 		{		p->process->numCycles=p->process->numCycles-50;
 			total=total-50;
 		temptime=temptime+50;
-		printf("process %d waittime %d\n",p->process->pid, waittime[p->process->pid]);
+		//printf("process %d waittime %d\n",p->process->pid, waittime[p->process->pid]);
 		
 		}
 		
@@ -149,7 +149,7 @@ void processlist_roundrobin (processlist *pt) {
 	total=total-p->process->numCycles;
 			temptime=temptime+p->process->numCycles;
 	p->process->numCycles=0;
-			printf("process %d waittime %d\n",p->process->pid, waittime[p->process->pid]);
+		//	printf("process %d waittime %d\n",p->process->pid, waittime[p->process->pid]);
 
 		}
 		lastwaittime[p->process->pid]=time+temptime;	
